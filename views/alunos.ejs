@@ -121,7 +121,7 @@
         <div class="modal-dialog">
           <div class="modal-content" style="border-top: 3px solid #00c0ef;">
             <form method="POST" action="/alunos">
-              <input type="hidden" name="id">
+              <input type="hidden" name="id_aluno">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -184,7 +184,7 @@
     
                 <div class="form-group">
                     <label for="serie">Série de conclusão</label>
-                    <select class="form-control" id="serie_colusao" name="serie_colusao">
+                    <select class="form-control" id="serie_conclusao" name="serie_conclusao">
                         <option value="" selected="selected">Selecione uma série</option>
                         <option value="1">1° Ano</option>
                         <option value="2">2° Ano</option>
@@ -244,7 +244,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+    </div>
 
     <div class="modal fade" id="modal-create">
       <div class="modal-dialog">
@@ -312,7 +312,7 @@
 
             <div class="form-group">
                 <label for="serie">Série de conclusão</label>
-                <select class="form-control" id="serie_colusao_create" name="serie_colusao">
+                <select class="form-control" id="serie_conclusao_create" name="serie_conclusao">
                     <option value="" selected="selected">Selecione uma série</option>
                     <option value="1">1° Ano</option>
                     <option value="2">2° Ano</option>
@@ -376,15 +376,13 @@
 
 <%- include("inc/footer") -%>
 
-
 <script src="js/hcode-formsave.js"></script>
 
 <script>
   let formCreate = document.querySelector("#modal-create form");
 
   formCreate.save().then(json=>{
-    console.log("entrou alunos.ejs");
-    // window.location.reload();
+    window.location.reload();
   }).catch(err => {
     console.log(err);
   });
@@ -406,9 +404,9 @@
 
           let data = JSON.parse(tr.dataset.row);
 
-          for (let name in data){
-          
+          console.log(data);
 
+          for (let name in data){
             switch (name){
               case 'imagem_aluno':
 
@@ -422,3 +420,4 @@
         });
       });
 </script>
+

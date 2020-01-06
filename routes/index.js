@@ -78,10 +78,12 @@ router.get('/alunos', function(req, res, next){
 router.post("/alunos", function(req, res, next){
   alunos.save(req.fields, req.files).then(results => {
     res.send(results);
-    console.log(results);
   }).catch(err => {
     res.send(err);
-  })
+  });
+
+//  res.send(req.fields);
+  // console.log(req.fields);
 });
 
 router.get('/users', function(req, res, next){
