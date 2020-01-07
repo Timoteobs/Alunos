@@ -379,45 +379,84 @@
 <script src="js/hcode-formsave.js"></script>
 
 <script>
-  let formCreate = document.querySelector("#modal-create form");
 
-  formCreate.save().then(json=>{
-    window.location.reload();
-  }).catch(err => {
-    console.log(err);
-  });
+	let formCreate = document.querySelector("#modal-create form");
 
-  let formUpdate = document.querySelector("#modal-update form");
+formCreate.save().then(json => {
+	window.location.reload();
+}).catch(err => {
+	console.log(err);
+});
 
-  formUpdate.save().then(json=>{
-    //window.location.reload();
-  }).catch(err => {
-    console.log(err);
-  });
+let formUpdate = document.querySelector("#modal-update form");
 
+formUpdate.save().then(json => {
+	window.location.reload();
+}).catch(err => {
+	console.log(err);
+});
 
-  [...document.querySelectorAll('.btn-update')].forEach(btn => {
-        btn.addEventListener('click', e => {
-        let tr = e.path.find(el => {
-            return (el.tagName.toUpperCase() === 'TR');
-          }); 
+[...document.querySelectorAll('.btn-delete')].forEach(btn => {
 
-          let data = JSON.parse(tr.dataset.row);
+	btn.addEventListener('click', e => {
 
-          console.log(data);
+		let tr = e.path.find(el => {
+			return (el.tagName.toUpperCase() === 'TR');
+		});
 
-          for (let name in data){
-            switch (name){
-              case 'imagem_aluno':
+		let data = JSON.parse(tr.dataset.row);
 
-              break;
-              default:
-              let input = formUpdate.querySelector(`[name=${name}]`);
-              if (input) input.value = data[name];      
-            }
-          }
-          $('#modal-update').modal('show');
-        });
-      });
+		Swal.fire({
+			title: 'Você tem certeza?',
+			text: `Deseja excluir o aluno: ${data.nome_aluno}?`,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Sim!'
+		}).then((result) => {
+			if (result.value) {
+
+				fetch(`/alunos/${data.id_aluno}`, {
+						method: 'DELETE'
+
+					}).then(response => response.json())
+
+					.then(json => {
+
+						Swal.fire(
+							'Excluído!',
+							'O Aluno foi excluído.',
+							'success'
+						).then(sucess => {
+							window.location.reload();
+						});
+					});
+			}
+		});
+	});
+});
+
+[...document.querySelectorAll('.btn-update')].forEach(btn => {
+	btn.addEventListener('click', e => {
+		let tr = e.path.find(el => {
+			return (el.tagName.toUpperCase() === 'TR');
+		});
+
+		let data = JSON.parse(tr.dataset.row);
+
+		for (let name in data) {
+			switch (name) {
+				case 'imagem_aluno':
+
+					break;
+				default:
+					let input = formUpdate.querySelector(`[name=${name}]`);
+					if (input) input.value = data[name];
+			}
+		}
+		$('#modal-update').modal('show');
+	});
+});
+
 </script>
-

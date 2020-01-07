@@ -86,6 +86,14 @@ router.post("/alunos", function(req, res, next){
   // console.log(req.fields);
 });
 
+router.delete("/alunos/:id", function(req, res, next){
+  alunos.delete(req.params.id).then(results => {
+    res.send(results);
+  }).catch(err => {
+    res.send(err);
+  });
+});
+
 router.get('/users', function(req, res, next){
   res.render('users', admin.getParams(req));
 });
