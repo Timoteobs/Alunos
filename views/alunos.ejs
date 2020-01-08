@@ -23,6 +23,7 @@
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#alunos" data-toggle="tab" aria-expanded="true">Alunos</a></li>
                 <li class=""><a href="#notas" data-toggle="tab" aria-expanded="false">Notas</a></li>
+                <li class=""><a href="#documentos" data-toggle="tab" aria-expanded="false">Documentos</a></li>
                 <!-- <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
               </ul>
 
@@ -79,7 +80,7 @@
                           <tr data-row='<%= JSON.stringify(row) %>'>
                             <td><%= row.id_aluno %></td>
                             <th><%= row.nome_aluno %></th>
-                            <td><%= row.data_nascimento %></td>
+                            <td><%= moment(row.data_nascimento).format("DD[/]MM[/]YYYY") %></td>
                             <td><%= row.nome_mae %></td>
                             <td><%= row.nome_pai %></td>
                             <td><button type="button" class="btn btn-xs btn-info btn-update" ><i
@@ -106,6 +107,9 @@
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="notas">
                   <h3>Em breve!</h3>
+                </div>
+                <div class="tab-pane" id="documentos">
+                  <h3>Em breve!!</h3>
                 </div>
               </div>
               <!-- /.tab-content -->
@@ -383,7 +387,13 @@
 	let formCreate = document.querySelector("#modal-create form");
 
 formCreate.save().then(json => {
-	window.location.reload();
+  Swal.fire(
+    'Salvo!',
+    'O Aluno cadastrado com sucesso!',
+		'success'
+	).then(sucess => {
+		window.location.reload();
+	});
 }).catch(err => {
 	console.log(err);
 });
@@ -391,7 +401,13 @@ formCreate.save().then(json => {
 let formUpdate = document.querySelector("#modal-update form");
 
 formUpdate.save().then(json => {
-	window.location.reload();
+	Swal.fire(
+    'Alterado!',
+    'As Informações do Aluno foram Atualizadas.',
+    'success'
+  ).then(sucess => {
+    window.location.reload();
+  });
 }).catch(err => {
 	console.log(err);
 });
