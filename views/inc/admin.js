@@ -43,6 +43,12 @@ module.exports = {
                 active:false
             },
             {
+                text:"Notas",
+                href:"/notas",
+                icon:"calculator",
+                active:false
+            },
+            {
                 text:"Usuários",
                 href:"/users",
                 icon:"users",

@@ -1,12 +1,15 @@
 var conn = require('../inc/db');
 var users = require('../inc/users');
 var alunos = require('../inc/alunos');
+var notas = require('../inc/notas');
 var admin = require('./../views/inc/admin');
 var express = require('express');
 var moment = require("moment");
 var router = express.Router();
 
 moment.locale("pt-BR");
+
+let notasAluno = {};
 
 router.use(function(req, res, next){
 
@@ -69,12 +72,11 @@ router.get('/', function(req, res, next){
   });
 });
 
-
 router.get('/alunos', function(req, res, next){
   alunos.getAlunos().then(data => {
     res.render('alunos', admin.getParams(req, {
       data,
-      moment 
+      moment
     }));
   });
 });
@@ -99,13 +101,11 @@ router.delete("/alunos/:id", function(req, res, next){
 });
 
 router.get('/users', function(req, res, next){
-
   users.getUsers().then(data => {
     res.render('users', admin.getParams(req, {
       data
     }));
   });
-
 });
 
 router.post('/users', function(req, res, next){
@@ -127,4 +127,38 @@ router.delete("/users/:id", function(req, res, next){
   });
 
 });
+
+router.get('/notas', function(req, res, next) {
+  alunos.getAlunos().then(data => {
+   notasAluno = data
+  });
+  next();
+});
+
+router.get('/notas', function(req, res, next){
+  notas.getNotas().then(data_nota =>{
+      res.render('notas', admin.getParams(req, {
+        data_nota,
+        notasAluno
+      }));  
+    });
+  });
+
+  router.post('/notas', function(req, res, next){
+    notas.saveNotas(req.fields).then(results => {
+      res.send(results);
+    }).catch(err => {
+      res.send(err);
+    });
+  });
+
+  router.delete("/notas/:id", function(req, res, next){
+    notas.delete(req.params.id).then(results => {
+      res.send(results);
+    }).catch(err => {
+      res.send(err);
+    });
+  
+  });
+
 module.exports = router;

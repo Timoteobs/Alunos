@@ -3,17 +3,21 @@
 
   <%- include("inc/head") -%>
 
-<body class="hold-transition login-page image-login">
+<body class="hold-transition login-page" style="background: url('/images/escola.jpg'); display:inline;">
   <div class="login-box">
-    <div class="login-logo">
-      <a href="#"><b>Simple</b>Form</a>
-    </div>
+    
     <!-- /.login-logo -->
     <div class="login-box-body">
+      
+      <div class="login-logo">
+        <a href="#"><b>Simple</b>Form</a>
+      </div>
+
+      <hr>
+
       <p class="login-box-msg">Faça seu login</p>
 
       <%- include('./inc/content/alerts')-%>
-
 
       <form method="post">
         <div class="form-group has-feedback">

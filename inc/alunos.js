@@ -15,11 +15,8 @@ module.exports = {
             });
         });
     },
-
-        save(fields, files){
+    save(fields, files){
             return new Promise((resolve, reject) => {
-
-                fields.doc = `images/${path.parse(files.imagem_aluno.path).base}`;
 
                 let  query, params;
 
@@ -37,7 +34,6 @@ module.exports = {
                                         serie_conclusao = ?,
                                         dispensa_aluno = ?,
                                         descricao_dispensa = ?,
-                                        imagem_aluno = ?,
                                         regime_dependencia= ? 
                                         WHERE id_aluno = ? 
                     `;
@@ -53,7 +49,6 @@ module.exports = {
                         fields.serie_conclusao,
                         fields.dispensa_aluno,
                         fields.descricao_dispensa,
-                        fields.doc,
                         fields.regime_dependencia,
                         fields.id_aluno
                     ];
@@ -61,8 +56,8 @@ module.exports = {
                 }else{
 
                     query=`
-                        INSERT INTO tb_alunos(nome_aluno, genero_aluno, nome_pai, nome_mae, data_nascimento, pais_aluno, estado_aluno, cidade_aluno, serie_conclusao, dispensa_aluno, descricao_dispensa, imagem_aluno, regime_dependencia)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO tb_alunos(nome_aluno, genero_aluno, nome_pai, nome_mae, data_nascimento, pais_aluno, estado_aluno, cidade_aluno, serie_conclusao, dispensa_aluno, descricao_dispensa, regime_dependencia)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `;
                     params = [
                         fields.nome_aluno,
@@ -76,7 +71,6 @@ module.exports = {
                         fields.serie_conclusao,
                         fields.dispensa_aluno,
                         fields.descricao_dispensa,
-                        fields.doc,
                         fields.regime_dependencia
                     ];
 
