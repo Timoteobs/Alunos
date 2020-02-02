@@ -1,21 +1,76 @@
 let conn = require("./db");
 let path = require("path");
+var Pagination = require("./../inc/Pagination");
 
 module.exports = {
-    getAlunos(){
+    
+    getAlunos(req){
+
         return new Promise((resolve, reject) => {
-            conn.query(`
-                SELECT * FROM tb_alunos order by nome_aluno;
-            `, (err, results) => {
-                if(err){
-                    reject(err);
-                }else{
-                    resolve(results);
-                }
+
+            let page = req.query.page;
+            let nomeAluno = req.query.filtro_nome_aluno;
+            let matriculaAluno = req.query.filtro_matricula;
+            if (!page) page = 1;
+
+            let query;
+            let params = [];
+
+            if (nomeAluno && matriculaAluno){
+
+                query = `
+                        SELECT SQL_CALC_FOUND_ROWS * 
+                        FROM tb_alunos
+                        WHERE nome_aluno LIKE ? 
+                        AND id_aluno = ?
+                        order by nome_aluno LIMIT ?, ?
+                    `;
+                params.push(`%${nomeAluno}%`, matriculaAluno);
+                
+            } else if (nomeAluno){
+
+                query = `
+                        SELECT SQL_CALC_FOUND_ROWS * 
+                        FROM tb_alunos
+                        WHERE nome_aluno LIKE ?
+                        order by nome_aluno LIMIT ?, ?
+                    `;
+                params.push(`%${nomeAluno}%`);
+
+            }else if (matriculaAluno){
+
+                query = `
+                        SELECT SQL_CALC_FOUND_ROWS * 
+                        FROM tb_alunos
+                        WHERE id_aluno = ?
+                        order by nome_aluno LIMIT ?, ?
+                    `;
+                params.push(matriculaAluno)
+
+            }else{
+                query = `
+                        SELECT SQL_CALC_FOUND_ROWS * 
+                        FROM tb_alunos
+                        order by nome_aluno LIMIT ?, ?
+                    `;
+            };
+
+            let pag = new Pagination(
+                query, 
+                params
+            );
+
+            pag.getPage(page).then(data => {
+                resolve({
+                    data,
+                    links: pag.getNavigation(req.query)
+                });
             });
-        });
+         });
     },
+
     save(fields, files){
+
             return new Promise((resolve, reject) => {
 
                 let  query, params;

@@ -15,16 +15,16 @@ class Grid {
         this.formCreate = document.querySelector(this.options.formCreate);
 
         this.formCreate.save().then(json => {
-        Swal.fire(
-            'Salvo!',
-            this.options.crateMsg,
-            'success'
-            ).then(sucess => {
-                window.location.reload();
+            Swal.fire(
+                'Salvo!',
+                this.options.crateMsg,
+                'success'
+                ).then(sucess => {
+                    window.location.reload();
+                });
+            }).catch(err => {
+                console.log(err);
             });
-        }).catch(err => {
-            console.log(err);
-        });
 
         this.formUpdate = document.querySelector(this.options.formUpdate);
 
@@ -148,12 +148,6 @@ class Grid {
             tr.not(this).removeClass('colorir');
             $(this).toggleClass('colorir');
         });
-
-    }
-
-    msg(params){
-        
-
 
     }
 }

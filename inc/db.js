@@ -4,7 +4,8 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'simple_form_db',
-    password: 'admserver01'
+    password: 'admserver01',
+    multipleStatements: true
   });
 
 

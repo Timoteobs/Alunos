@@ -9,7 +9,7 @@ var router = express.Router();
 
 moment.locale("pt-BR");
 
-let notasAluno = {};
+let nomeAlunos = {};
 
 router.use(function(req, res, next){
 
@@ -73,10 +73,11 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/alunos', function(req, res, next){
-  alunos.getAlunos().then(data => {
+  alunos.getAlunos(req).then(pag => {
     res.render('alunos', admin.getParams(req, {
-      data,
-      moment
+      data: pag.data,
+      moment,
+      links: pag.links
     }));
   });
 });
@@ -129,36 +130,37 @@ router.delete("/users/:id", function(req, res, next){
 });
 
 router.get('/notas', function(req, res, next) {
-  alunos.getAlunos().then(data => {
-   notasAluno = data
+  notas.getNomesAlunos().then(data => {
+    nomeAlunos = data
   });
   next();
 });
 
 router.get('/notas', function(req, res, next){
-  notas.getNotas().then(data_nota =>{
+  notas.getNotas(req).then(pag =>{
       res.render('notas', admin.getParams(req, {
-        data_nota,
-        notasAluno
+        data_nota: pag.data,
+        nomeAlunos,
+        links: pag.links
       }));  
     });
-  });
+});
 
-  router.post('/notas', function(req, res, next){
+router.post('/notas', function(req, res, next){
     notas.saveNotas(req.fields).then(results => {
       res.send(results);
     }).catch(err => {
       res.send(err);
     });
-  });
+});
 
-  router.delete("/notas/:id", function(req, res, next){
+router.delete("/notas/:id", function(req, res, next){
     notas.delete(req.params.id).then(results => {
       res.send(results);
     }).catch(err => {
       res.send(err);
     });
   
-  });
+});
 
 module.exports = router;

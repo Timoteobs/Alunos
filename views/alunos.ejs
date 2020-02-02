@@ -5,7 +5,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Alunos e Relação de notas
+          Alunos
         </h1>
         <ol class="breadcrumb">
           <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
@@ -23,39 +23,37 @@
               </ul>
 
               <div class="tab-content">                
-                <div class="tab-pane active" id="alunos">
+                <div class="tab-pane active " id="alunos">
+                  <div id="form-filtrar">
+                    <form>
+                        <div class="form-group">
+                          <label for="filtro_matricula">Matricula</label>
+                          <input type="number" class="form-control" id="filtro_matricula" name="filtro_matricula">
+                        </div>
+      
+                        <div class="form-group">
+                          <label for="filtro_nome_aluno">Nome Aluno</label>
+                          <input type="text" class="form-control" id="filtro_nome_aluno" name="filtro_nome_aluno">
+                        </div>
+
+                    <div style="margin-bottom: 10px;" >
+                      <button class="btn btn-info btn-filtrar" type="submit"> <i class="fa fa-search"></i> Filtrar </button>
+                      <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modal-create"><i
+                        class="fa fa-plus"></i>
+                      Cadastrar Aluno</a>
+                    </div>
+                  </form>
+                </div>
                     <div class="box">
                     <div class="box-header">
                       <h3 class="box-title">Lista</h3>
-                      <a href="#" class="btn btn-xs pull-right btn-success" data-toggle="modal" data-target="#modal-create"><i
-                          class="fa fa-plus"></i>
-                        Novo</a>
                     </div>
                     <div class="box-header" style="height:44px;">
-          
-                      <div class="box-tools">
-                        <form>
-                          <div class="form-group" style="width: 182px; float: left">
-                            <div class="input-group">
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                              <input type="date" name="start" class="form-control unstyled" value="">
-                            </div>
-                          </div>
-                          <div class="form-group" style="width: 182px; float: left">
-                            <div class="input-group">
-                              <div class="input-group-addon">
-                                até
-                              </div>
-                              <input type="date" name="end" class="form-control unstyled" value="">
-                            </div>
-                          </div>
-                          <div class="form-group" style="float: left; margin-left: 7px;">
-                            <button type="submit" class="btn btn-default">OK</button>
-                          </div>
-                        </form>
-                      </div>
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                        <% links.forEach(link => { %> 
+                          <li <% if(link.active){ %> class="active"<% } %>><a href="<%= link.href %>"> <%= link.text %> </a></li>
+                        <% }); %> 
+                      </ul>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
@@ -78,7 +76,6 @@
                             <td><%= moment(row.data_nascimento).format("DD[/]MM[/]YYYY") %></td>
                             <td><%= row.nome_mae %></td>
                             <td><%= row.nome_pai %></td>
-                            <td ></td>
                             <td><button type="button" class="btn btn-xs btn-info btn-update" ><i
                                   class="fa fa-pencil"></i> Editar</button>&nbsp;<button type="button" class="btn btn-xs btn-danger btn-delete"><i
                                   class="fa fa-trash"></i> Excluir</button></td>
@@ -90,11 +87,9 @@
                     <!-- /.box-body -->
                     <div class="box-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
-                        <li class="active"><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">»</a></li>
+                        <% links.forEach(link => { %> 
+                        <li <% if(link.active){ %> class="active"<% } %>><a href="<%= link.href %>"> <%= link.text %> </a></li>
+                        <% }); %> 
                       </ul>
                     </div>
                     <!-- /.box-footer -->
@@ -121,7 +116,7 @@
               <div class="modal-body">
                   <div class="form-group">
                     <label for="nomeAluno">Nome do Aluno</label>
-                    <input type="text" class="form-control" id="nomeAluno" placeholder="Digite o nome do Aluno" name="nome_aluno">
+                    <input type="text" required class="form-control" id="nomeAluno" placeholder="Digite o nome do Aluno" name="nome_aluno">
                 </div>
                 <div class="form-group">
                     <label>Gênero</label>
@@ -134,17 +129,17 @@
     
                 <div class="form-group">
                     <label for="nomePai">Nome do Pai</label>
-                    <input type="text" class="form-control" id="nome_pai" placeholder="Digite o nome do Pai do Aluno" name="nome_pai">
+                    <input type="text" required class="form-control" id="nome_pai" placeholder="Digite o nome do Pai do Aluno" name="nome_pai">
                 </div>
     
                 <div class="form-group">
                     <label for="nomeMae">Nome da Mãe</label>
-                    <input type="text" class="form-control" id="nome_mae" placeholder="Digite o nome da Mãe do Aluno" name="nome_mae">
+                    <input type="text" required class="form-control" id="nome_mae" placeholder="Digite o nome da Mãe do Aluno" name="nome_mae">
                 </div>
     
                 <div class="form-group">
                     <label for="exampleInputBirth">Nascimento</label>
-                    <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+                    <input type="date" required class="form-control" id="data_nascimento" name="data_nascimento">
                 </div>
     
                 <div class="form-group">
@@ -175,7 +170,7 @@
                 <div class="form-group">
                     <label for="serie">Série de conclusão</label>
                     <select class="form-control" id="serie_conclusao" name="serie_conclusao">
-                        <option value="" selected="selected">Selecione uma série</option>
+                        <option value="" required selected="selected">Selecione uma série</option>
                         <option value="1">1° Ano</option>
                         <option value="2">2° Ano</option>
                         <option value="3">3° Ano</option>
@@ -243,7 +238,7 @@
             <div class="modal-body">
               <div class="form-group">
                 <label for="nomeAluno">Nome do Aluno</label>
-                <input type="text" class="form-control" id="nome_aluno_create" placeholder="Digite o nome do Aluno" name="nome_aluno">
+                <input type="text" required class="form-control" id="nome_aluno_create" placeholder="Digite o nome do Aluno" name="nome_aluno">
             </div>
             <div class="form-group">
                 <label>Gênero</label>
@@ -256,17 +251,17 @@
 
             <div class="form-group">
                 <label for="nomePai">Nome do Pai</label>
-                <input type="text" class="form-control" id="nome_pai_create" placeholder="Digite o nome do Pai do Aluno" name="nome_pai">
+                <input type="text" required class="form-control" id="nome_pai_create" placeholder="Digite o nome do Pai do Aluno" name="nome_pai">
             </div>
 
             <div class="form-group">
                 <label for="nomeMae">Nome da Mãe</label>
-                <input type="text" class="form-control" id="nome_mae_create" placeholder="Digite o nome da Mãe do Aluno" name="nome_mae">
+                <input type="text" required class="form-control" id="nome_mae_create" placeholder="Digite o nome da Mãe do Aluno" name="nome_mae">
             </div>
 
             <div class="form-group">
                 <label for="exampleInputBirth">Nascimento</label>
-                <input type="date" class="form-control" id="data_nascimento_create" name="data_nascimento">
+                <input type="date" required class="form-control" id="data_nascimento_create" name="data_nascimento">
             </div>
 
             <div class="form-group">
@@ -296,7 +291,7 @@
 
             <div class="form-group">
                 <label for="serie">Série de conclusão</label>
-                <select class="form-control" id="serie_conclusao_create" name="serie_conclusao">
+                <select class="form-control" required id="serie_conclusao_create" name="serie_conclusao">
                     <option value="" selected="selected">Selecione uma série</option>
                     <option value="1">1° Ano</option>
                     <option value="2">2° Ano</option>
@@ -359,7 +354,6 @@
 <script src="js/grid.js"></script>
 
 <script>
-
   new Grid({
     deleteUrl:'/alunos/${data.id_aluno}',
     deleteMsg:'Deseja excluir o aluno: ${data.nome_aluno}?', 
@@ -367,5 +361,4 @@
     crateMsg :'O Aluno cadastrado com sucesso!',
     nameData :'data_nascimento'
   });
-
 </script>

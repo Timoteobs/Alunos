@@ -22,41 +22,45 @@
               </ul>
 
               <div class="tab-content">
-               <div id="form-filtrar">
-                <form action="/notas">
-                  <input type="hidden" name="id_filtro">
-                  <div class="form-group">
-                    <label for="filtro_matricula">Matricula</label>
-                    <input type="number" class="form-control" id="filtro_matricula" name="filtro_matricula">
+                <div id="form-filtrar">
+                  <form action="">
+                    <div class="form-group">
+                      <label for="filtro_matricula">Matricula</label>
+                      <input type="number" class="form-control" id="filtro_matricula" name="filtro_matricula">
+                    </div>
+  
+                    <div class="form-group">
+                      <label for="filtro_nome_aluno">Nome Aluno</label>
+                      <input type="text" class="form-control" id="filtro_nome_aluno" name="filtro_nome_aluno">
+                    </div>
+                  
+                  <div style="margin-bottom: 10px;" >
+                    <button class="btn btn-info btn-filtrar" type="submit"> <i class="fa fa-search"></i> Filtrar </button>
+                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modal-create"><i
+                      class="fa fa-plus"></i>
+                    Cadastrar Notas</a>
                   </div>
-
-                  <div class="form-group">
-                    <label for="filtro_nome_aluno">Nome Aluno</label>
-                    <input type="text" class="form-control" id="filtro_nome_aluno" name="filtro_nome_aluno">
-                  </div>
-                
-                <div style="margin-bottom: 10px;" >
-                  <button class="btn btn-info btn-filtrar" type="submit"> Filtrar </button>
-                </div>
-              </form>
-            </div>
+                </form>
+              </div>
 
                 <div class="tab-pane active" id="notas">
                     <div class="box">
                     <div class="box-header">
                       <h3 class="box-title">Lista</h3>
-                      <a href="#" class="btn btn-xs pull-right btn-success" data-toggle="modal" data-target="#modal-create"><i
-                          class="fa fa-plus"></i>
-                        Novo</a>
                     </div>
                     <div class="box-header" style="height:44px;">
-                      
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                        <% links.forEach(link => { %> 
+                          <li <% if(link.active){ %> class="active"<% } %>><a href="<%= link.href %>"> <%= link.text %> </a></li>
+                        <% }); %> 
+                      </ul>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                       <table class="table">
                         <thead>
                           <tr>
+                            <th>Matrícula</th>
                             <th> Aluno </th>
                             <th style="width: 80px">Série</th>
                             <th>Português</th>
@@ -71,12 +75,14 @@
                             <th>Religião</th>
                             <th>Educação Física</th>
                             <th>Informática</th>
-                            <th>Espanhol</th> 
+                            <th>Espanhol</th>
+                            <th>Ações</th> 
                           </tr>
                         </thead>
                         <tbody>
                           <% data_nota.forEach(function(row){ %>
                           <tr data-row='<%= JSON.stringify(row) %>'>
+                            <td><%= row.id_aluno %></td>
                             <td><%= row.nome_aluno %></td>
                             <td><%= row.id_serie %>° ano </td>
                             <td><%= row.nota_protugues %></td>
@@ -92,6 +98,8 @@
                             <td><%= row.nota_edFisica %></td>
                             <td><%= row.nota_informatica %></td>
                             <td><%= row.nota_espanhol %></td>
+                            <td><button type="button" class="btn btn-xs btn-info btn-update" ><i
+                              class="fa fa-pencil"></i> Editar</button>
                           </tr>
                         <% }); %>
                         </tbody>
@@ -100,11 +108,9 @@
                     <!-- /.box-body -->
                     <div class="box-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
-                        <li class="active"><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">»</a></li>
+                        <% links.forEach(link => { %> 
+                          <li <% if(link.active){ %> class="active"<% } %>><a href="<%= link.href %>"> <%= link.text %> </a></li>
+                        <% }); %> 
                       </ul>
                     </div>
                     <!-- /.box-footer -->
@@ -121,7 +127,7 @@
         <div class="modal-dialog">
           <div class="modal-content" style="border-top: 3px solid #00c0ef;">
             <form method="POST" action="/notas">
-              <input type="hidden" name="id_aluno">
+              <input type="hidden" name="id_nota">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -129,62 +135,14 @@
                 <h4 class="modal-title">Editar Aluno</h4>
               </div>
               <div class="modal-body">
-                  <div class="form-group">
-                    <label for="nomeAluno">Nome do Aluno</label>
-                    <input type="text" class="form-control" id="nomeAluno" placeholder="Digite o nome do Aluno" name="nome_aluno">
-                </div>
+
                 <div class="form-group">
-                    <label>Gênero</label>
-                    <select class="form-control" id="genero_aluno" name="genero_aluno">
-                        <option value="" selected="selected">Selecione o Gênero</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="feminino">Feminino</option>
-                    </select>
+                    <label for="id_aluno" required name="nome_aluno"></label>
                 </div>
     
                 <div class="form-group">
-                    <label for="nomePai">Nome do Pai</label>
-                    <input type="text" class="form-control" id="nome_pai" placeholder="Digite o nome do Pai do Aluno" name="nome_pai">
-                </div>
-    
-                <div class="form-group">
-                    <label for="nomeMae">Nome da Mãe</label>
-                    <input type="text" class="form-control" id="nome_mae" placeholder="Digite o nome da Mãe do Aluno" name="nome_mae">
-                </div>
-    
-                <div class="form-group">
-                    <label for="exampleInputBirth">Nascimento</label>
-                    <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
-                </div>
-    
-                <div class="form-group">
-                    <label for="pais">País</label>
-                    <select class="form-control" id="pais_aluno" name="pais_aluno">
-                        <option value="" selected="selected">Selecione um país</option>
-                        <option value="Brasil">Brasil</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                    </select>
-                </div>
-    
-                <div class="form-group">
-                    <label for="estado">Estado</label>
-                    <select class="form-control" id="estado_aluno" name="estado_aluno">
-                        <option value="" selected="selected">Selecione um estado</option>
-                        <option value="pernambuco">Pernambuco</option>
-                    </select>
-                </div>
-    
-                <div class="form-group">
-                    <label for="cidade">Cidade</label>
-                    <select class="form-control" id="cidade_aluno" name="cidade_aluno">
-                        <option value="" selected="selected">Selecione uma cidade</option>
-                        <option value="recife">Recife</option>
-                    </select>
-                </div>
-    
-                <div class="form-group">
-                    <label for="serie">Série de conclusão</label>
-                    <select class="form-control" id="serie_conclusao" name="serie_conclusao">
+                    <label for="serie">Série</label>
+                    <select class="form-control" required id="id_serie" name="id_serie">
                         <option value="" selected="selected">Selecione uma série</option>
                         <option value="1">1° Ano</option>
                         <option value="2">2° Ano</option>
@@ -198,36 +156,113 @@
                     </select>
                 </div>
     
-                
-                <div class="box-header with-border">
-                    <h3 class="box-title">Dispensa da prática de educação física</h3>
-                </div>
                 <div class="form-group">
-                  <select class="form-control" id="dispensa_aluno" name="dispensa_aluno">
-                      <option value="" selected="selected">Selecione o tipo de Dispensa</option>
-                      <option value="decreto-federal">Decreto Federal</option>
-                      <option value="lei-federal">Lei Federal</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label>Descrição Dispensa</label>
-                <input type="text" class="form-control" id="descricao_dispensa" name="descricao_dispensa">
-              </div>
-    
-                <div class="box-header with-border">
-                    <h3 class="box-title">Informações complementares</h3>
+                    <label for="dias_letivos">Dias letivos</label>
+                    <input type="number" required class="form-control" id="dias_letivos" name="dias_letivos">
                 </div>
-                <!-- /.box-header -->
-                <!-- form start -->
     
                 <div class="form-group">
-                  <label>Regime de dependência</label>
-                  <select class="form-control" id="regime_dependencia" name="regime_dependencia">
-                      <option value="" selected="selected"></option>
-                      <option value="sim">Sim</option>
-                      <option value="nao">Não</option>
-                  </select>
-              </div>
+                    <label for="estabelecimento">Estabelecimento</label>
+                    <select class="form-control" required id="estabelecimento" name="estabelecimento">
+                        <option value="Teste">Teste</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="resultado">Resultado</label>
+                    <select class="form-control" required id="resultado" name="resultado">
+                        <option value="" selected="selected">Selecione um Resultado</option>
+                        <option value="aprovado">Aprovado</option>
+                        <option value="reprovado">Reprovado</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="ano">Ano</label>
+                    <input type="number" class="form-control" id="ano" name="ano">
+                </div>
+    
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select class="form-control" id="estado_aluno" name="estado">
+                        <option value="" selected="selected">Selecione um estado</option>
+                        <option value="pe">Pernambuco</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <select class="form-control" id="cidade_aluno" name="cidade">
+                        <option value="" selected="selected">Selecione uma cidade</option>
+                        <option value="recife">Recife</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                  <label for="nota_protugues">Nota em Português</label>
+                  <input type="number" class="form-control" id="nota_protugues" name="nota_protugues">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_ingles">Nota em Inglês</label>
+                    <input type="number" class="form-control" id="nota_ingles" name="nota_ingles">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_estudosS">Nota em Estudos sociais</label>
+                    <input type="number" class="form-control" id="nota_estudosS" name="nota_estudosS">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_historia">Nota em História</label>
+                    <input type="number" class="form-control" id="nota_historia" name="nota_historia">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_geografia">Nota em Geografia</label>
+                    <input type="number" class="form-control" id="nota_geografia" name="nota_geografia">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_ciencias">Nota em Ciências</label>
+                    <input type="number" class="form-control" id="nota_ciencias" name="nota_ciencias">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota">Nota em Nota</label>
+                    <input type="number" class="form-control" id="nota" name="nota">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_matematica">Nota em Matemática</label>
+                    <input type="number" class="form-control" id="nota_matematica" name="nota_matematica">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_artes">Nota em Artes</label>
+                    <input type="number" class="form-control" id="nota_artes" name="nota_artes">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_religiao">Nota em Religião</label>
+                    <input type="number" class="form-control" id="nota_religiao" name="nota_religiao">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_edFisica">Nota em Educação Física</label>
+                    <input type="number" class="form-control" id="nota_edFisica" name="nota_edFisica">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_informatica">Nota em Informática</label>
+                    <input type="number" class="form-control" id="nota_informatica" name="nota_informatica">
+                </div>
+    
+                <div class="form-group">
+                    <label for="nota_espanhol">Nota em Espanhol</label>
+                    <input type="number" class="form-control" id="nota_espanhol" name="nota_espanhol">
+                </div>
+    
             </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
@@ -248,15 +283,15 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title">Novo Aluno</h4>
+              <h4 class="modal-title">Cadastro de Notas</h4>
             </div>
             <div class="modal-body">
 
             <div class="form-group">
                 <label for="id_aluno">Aluno</label>
-                <select class="form-control" id="id_aluno_create" name="id_aluno">
+                <select class="form-control" required id="id_aluno_create" name="id_aluno">
                     <option value="" selected="selected">Selecione uma Aluno</option>
-                    <% notasAluno.forEach(function(row){ %>
+                    <% nomeAlunos.forEach(function(row){ %>
                     <option value="<%= row.id_aluno %>"> <%= row.nome_aluno %> </option>
                     <% }); %>
                 </select>
@@ -264,7 +299,7 @@
 
             <div class="form-group">
                 <label for="serie">Série</label>
-                <select class="form-control" id="id_serie_create" name="id_serie">
+                <select class="form-control" required  id="id_serie_create" name="id_serie">
                     <option value="" selected="selected">Selecione uma série</option>
                     <option value="1">1° Ano</option>
                     <option value="2">2° Ano</option>
@@ -280,12 +315,12 @@
 
             <div class="form-group">
                 <label for="dias_letivos">Dias letivos</label>
-                <input type="number" class="form-control" id="dias_letivos_create" name="dias_letivos">
+                <input type="number" required class="form-control" id="dias_letivos_create" name="dias_letivos">
             </div>
 
             <div class="form-group">
                 <label for="estabelecimento">Estabelecimento</label>
-                <select class="form-control" id="estabelecimento_create" name="estabelecimento">
+                <select class="form-control" required id="estabelecimento_create" name="estabelecimento">
                     <option value="Teste">Teste</option>
                 </select>
             </div>
@@ -293,6 +328,7 @@
             <div class="form-group">
                 <label for="resultado">Resultado</label>
                 <select class="form-control" id="resultado_create" name="resultado">
+                    <option value="" selected="selected">Selecione um Resultado</option>
                     <option value="aprovado">Aprovado</option>
                     <option value="reprovado">Reprovado</option>
                 </select>
@@ -305,15 +341,15 @@
 
             <div class="form-group">
                 <label for="estado">Estado</label>
-                <select class="form-control" id="estado_aluno_create" name="estado_aluno">
+                <select class="form-control" id="estado_aluno_create" name="estado">
                     <option value="" selected="selected">Selecione um estado</option>
-                    <option value="pernambuco">Pernambuco</option>
+                    <option value="pe">Pernambuco</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="cidade">Cidade</label>
-                <select class="form-control" id="cidade_aluno_create" name="cidade_aluno">
+                <select class="form-control" id="cidade_aluno_create" name="cidade">
                     <option value="" selected="selected">Selecione uma cidade</option>
                     <option value="recife">Recife</option>
                 </select>
@@ -408,25 +444,5 @@ new Grid({
   crateMsg :'A nota foi Aluno cadastrada com sucesso!' 
 });
 
-let formfiltrar = document.querySelector("#form-filtrar form");
-
-document.querySelector('.btn-filtrar').addEventListener('click', e =>{
-  e.preventDefault();
-
- let formData = new FormData(formfiltrar);
-
- fetch(`/notas/${formData.filtro_matricula}`, {
-        method: 'GET'
-    }).then(response => response.json())
-    .then(json => {
-      Swal.fire(
-        'Excluído!',
-        'O Aluno foi excluído.',
-        'success'
-      ).then(sucess => {
-        window.location.reload();
-      });
-    });
-});
 
 </script>
